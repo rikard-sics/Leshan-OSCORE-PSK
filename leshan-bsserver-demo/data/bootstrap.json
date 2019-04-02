@@ -1,0 +1,45 @@
+{
+  "osboxes": {
+    "servers": {
+      "0": {
+        "shortId": 123,
+        "lifetime": 20,
+        "defaultMinPeriod": 1,
+        "notifIfDisabled": true,
+        "binding": "U"
+      }
+    },
+    "security": {
+      "0": {
+        "uri": "coap://127.0.0.1:5693",
+        "bootstrapServer": true,
+        "securityMode": "NO_SEC",
+        "publicKeyOrId": [],
+        "serverPublicKey": [],
+        "secretKey": [],
+        "smsSecurityMode": "NO_SEC",
+        "smsBindingKeyParam": [],
+        "smsBindingKeySecret": [],
+        "serverSmsNumber": "",
+        "serverId": 111,
+        "clientOldOffTime": 1,
+        "bootstrapServerAccountTimeout": 0
+      },
+      "1": {
+        "uri": "coap://127.0.0.1:5683",
+        "bootstrapServer": false,
+        "securityMode": "NO_SEC",
+        "publicKeyOrId": [],
+        "serverPublicKey": [],
+        "secretKey": [],
+        "smsSecurityMode": "NO_SEC",
+        "smsBindingKeyParam": [],
+        "smsBindingKeySecret": [],
+        "serverSmsNumber": "",
+        "serverId": 123,
+        "clientOldOffTime": 1,
+        "bootstrapServerAccountTimeout": 0
+      }
+    }
+  }
+}
