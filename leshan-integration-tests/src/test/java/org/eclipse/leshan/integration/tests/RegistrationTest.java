@@ -46,6 +46,7 @@ import org.eclipse.leshan.core.observation.Observation;
 import org.eclipse.leshan.core.request.ContentFormat;
 import org.eclipse.leshan.core.request.ObserveRequest;
 import org.eclipse.leshan.core.request.ReadRequest;
+import org.eclipse.leshan.core.request.exception.SendFailedException;
 import org.eclipse.leshan.core.response.ObserveResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.server.registration.Registration;
@@ -230,12 +231,12 @@ public class RegistrationTest {
         assertTrue(observations.isEmpty());
 
         // try to send a new observation
-        observeResponse = helper.server.send(currentRegistration, new ObserveRequest(3, 0), 50);
-        assertNull(observeResponse);
-
-        // check observationStore is empty
-        observations = helper.server.getObservationService().getObservations(currentRegistration);
-        assertTrue(observations.isEmpty());
+        try {
+            observeResponse = helper.server.send(currentRegistration, new ObserveRequest(3, 0), 50);
+        } catch (SendFailedException e) {
+            return;
+        }
+        fail("Observe request should be sent");
     }
 
     // TODO not really a registration test
@@ -287,7 +288,7 @@ public class RegistrationTest {
         coapRequest.getOptions().addUriQuery("ep=" + helper.currentEndpointIdentifier);
 
         // send request
-        CoapEndpoint.CoapEndpointBuilder builder = new CoapEndpoint.CoapEndpointBuilder();
+        CoapEndpoint.Builder builder = new CoapEndpoint.Builder();
         builder.setInetSocketAddress(new InetSocketAddress(0));
         CoapEndpoint coapEndpoint = builder.build();
         coapEndpoint.start();

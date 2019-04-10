@@ -50,6 +50,7 @@ import org.eclipse.leshan.client.californium.LeshanClientBuilder;
 import org.eclipse.leshan.client.object.Device;
 import org.eclipse.leshan.client.object.Security;
 import org.eclipse.leshan.client.object.Server;
+import org.eclipse.leshan.client.resource.DummyInstanceEnabler;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
 import org.eclipse.leshan.core.californium.EndpointFactory;
@@ -191,8 +192,8 @@ public class SecureIntegrationTestHelper extends IntegrationTestHelper {
                         12345, GOOD_PSK_ID.getBytes(StandardCharsets.UTF_8), GOOD_PSK_KEY));
         initializer.setInstancesForObject(LwM2mId.SERVER, new Server(12345, LIFETIME, BindingMode.U, false));
         initializer.setInstancesForObject(LwM2mId.DEVICE, new Device("Eclipse Leshan", MODEL_NUMBER, "12345", "U"));
-        List<LwM2mObjectEnabler> objects = initializer.createMandatory();
-        objects.add(initializer.create(2));
+        initializer.setDummyInstancesForObject(LwM2mId.ACCESS_CONTROL);
+        List<LwM2mObjectEnabler> objects = initializer.createAll();
 
         InetSocketAddress clientAddress = new InetSocketAddress(InetAddress.getLoopbackAddress(), 0);
         LeshanClientBuilder builder = new LeshanClientBuilder(getCurrentEndpoint());
@@ -205,7 +206,7 @@ public class SecureIntegrationTestHelper extends IntegrationTestHelper {
             @Override
             public CoapEndpoint createUnsecuredEndpoint(InetSocketAddress address, NetworkConfig coapConfig,
                     ObservationStore store) {
-                CoapEndpoint.CoapEndpointBuilder builder = new CoapEndpoint.CoapEndpointBuilder();
+                CoapEndpoint.Builder builder = new CoapEndpoint.Builder();
                 builder.setInetSocketAddress(address);
                 builder.setNetworkConfig(coapConfig);
                 return builder.build();
@@ -214,7 +215,7 @@ public class SecureIntegrationTestHelper extends IntegrationTestHelper {
             @Override
             public CoapEndpoint createSecuredEndpoint(DtlsConnectorConfig dtlsConfig, NetworkConfig coapConfig,
                     ObservationStore store) {
-                CoapEndpoint.CoapEndpointBuilder builder = new CoapEndpoint.CoapEndpointBuilder();
+                CoapEndpoint.Builder builder = new CoapEndpoint.Builder();
                 Builder dtlsConfigBuilder = new Builder(dtlsConfig);
                 if (dtlsConfig.getPskStore() != null) {
                     String identity = dtlsConfig.getPskStore().getIdentity(null);
@@ -248,8 +249,8 @@ public class SecureIntegrationTestHelper extends IntegrationTestHelper {
                 useServerCertificate ? serverX509Cert.getPublicKey().getEncoded() : serverPublicKey.getEncoded()));
         initializer.setInstancesForObject(LwM2mId.SERVER, new Server(12345, LIFETIME, BindingMode.U, false));
         initializer.setInstancesForObject(LwM2mId.DEVICE, new Device("Eclipse Leshan", MODEL_NUMBER, "12345", "U"));
-        List<LwM2mObjectEnabler> objects = initializer.createMandatory();
-        objects.add(initializer.create(2));
+        initializer.setClassForObject(LwM2mId.ACCESS_CONTROL, DummyInstanceEnabler.class);
+        List<LwM2mObjectEnabler> objects = initializer.createAll();
 
         InetSocketAddress clientAddress = new InetSocketAddress(InetAddress.getLoopbackAddress(), 0);
         LeshanClientBuilder builder = new LeshanClientBuilder(getCurrentEndpoint());
@@ -286,8 +287,8 @@ public class SecureIntegrationTestHelper extends IntegrationTestHelper {
                         serverCertificate.getEncoded()));
         initializer.setInstancesForObject(LwM2mId.SERVER, new Server(12345, LIFETIME, BindingMode.U, false));
         initializer.setInstancesForObject(LwM2mId.DEVICE, new Device("Eclipse Leshan", MODEL_NUMBER, "12345", "U"));
-        List<LwM2mObjectEnabler> objects = initializer.createMandatory();
-        objects.add(initializer.create(2));
+        initializer.setClassForObject(LwM2mId.ACCESS_CONTROL, DummyInstanceEnabler.class);
+        List<LwM2mObjectEnabler> objects = initializer.createAll();
 
         InetSocketAddress clientAddress = new InetSocketAddress(InetAddress.getLoopbackAddress(), 0);
         LeshanClientBuilder builder = new LeshanClientBuilder(getCurrentEndpoint());

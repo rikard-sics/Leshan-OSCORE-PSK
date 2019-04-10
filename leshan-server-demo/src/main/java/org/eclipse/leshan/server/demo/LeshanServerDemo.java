@@ -78,7 +78,7 @@ import org.eclipse.leshan.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import COSE.AlgorithmID;
+import org.eclipse.californium.cose.AlgorithmID;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.util.Pool;
